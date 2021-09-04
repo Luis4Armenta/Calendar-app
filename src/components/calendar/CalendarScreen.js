@@ -9,23 +9,20 @@ import 'moment/locale/es-mx';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { uiOpenModal } from '../../actions/ui'
+import { clearActiveEvent, setActiveEvent } from '../../actions/events'
+import { AddNewFab } from '../ui/AddNewFab'
+import { DeleteEventFab } from '../ui/DeleteEventFab'
 
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
 
-const events = [{
-  title: 'Cumpleaños del jefe',
-  start: moment().toDate(),
-  end: moment().add(2, 'hours').toDate(),
-  bgColor: '#fafafa',
-  user: {
-    _id: '123',
-    name: 'José Pedro' 
-  }
-}];
-
 export const CalendarScreen = () => {
+  const { events, activeEvent } = useSelector( state => state.calendar );
+  const dispatch = useDispatch();
+
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 
   const onViewChange = (e) => {
@@ -33,12 +30,16 @@ export const CalendarScreen = () => {
     localStorage.setItem('lastView', e);
   }
 
-  const onSelectEvent = (e) => {
-    console.log(e);
+  const onSelectEvent = (event) => {
+    dispatch(setActiveEvent(event));
   }
   
   const onDoubleClick = (e) => {
-    console.log(e)
+    dispatch(uiOpenModal());
+  }
+
+  const onSelectSlot = (e) => {
+    dispatch(clearActiveEvent());
   }
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -66,13 +67,20 @@ export const CalendarScreen = () => {
         eventPropGetter={ eventStyleGetter }
         onDoubleClickEvent={ onDoubleClick }
         onSelectEvent={ onSelectEvent }
+        onSelectSlot={ onSelectSlot }
+        selectable={ true }
         onView={ onViewChange }
         view={lastView}
         components={{
           event: CalendarEvent
         }}
       />
+       <AddNewFab />
 
+       {
+          (activeEvent) && <DeleteEventFab />
+       }
+       
       <CalendarModal />
     </div>
   )
