@@ -5,7 +5,6 @@ import { types } from "../types/types"
 
 export const startAddNewEvent = (event) => {
   return async(dispatch, getState) => {
-
     const { uid, name } = getState().auth;
     
     try {
@@ -24,8 +23,6 @@ export const startAddNewEvent = (event) => {
     } catch (error) {
       console.error(error);
     }
-    
-    
   }
 }
 

@@ -32,9 +32,10 @@ const initEvent = {
 }
 
 export const CalendarModal = () => {
+  const dispatch = useDispatch();
+  
   const { modalOpen } = useSelector( state => state.ui );
   const { activeEvent } = useSelector( state => state.calendar );
-  const dispatch = useDispatch();
 
   const [dateStart, setDateStart] = useState(DEFAULT_TIME_START_DATE.toDate());
   const [dateEnd, setDateEnd] = useState(DEFAULT_TIME_END_DATE.toDate());
@@ -100,8 +101,7 @@ export const CalendarModal = () => {
     } else {
       dispatch(startAddNewEvent(formValues));
     }
-    
-    
+
     setTitleValid(true);
     closeModal();
   }
