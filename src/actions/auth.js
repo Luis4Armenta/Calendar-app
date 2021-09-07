@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { fetchSinToken, fetchWithToken } from "../helpers/fetch"
 import { types } from "../types/types";
+import { logoutEvent } from "./events";
 
 export const startLogin = (email, password) => {
   return async(dispatch) => {
@@ -41,15 +42,13 @@ export const startChecking = () => {
     const body =await resp.json();
 
     if(body.ok) {
-      console.log('La respuesta del renew ha sido positiva')
       localStorage.setItem('token', body.token);
       localStorage.setItem('token-init-date', new Date().getTime());
       
       dispatch(login({ uid: body.uid, name: body.name }));
     } else {
-      console.log('La respuesta del renew ha sido negativa')
+      dispatch(checkingFinish());
     }
-    dispatch(checkingFinish());
   }
 }
 
@@ -66,6 +65,7 @@ export const startLogout = () => {
   return async(dispatch) => {
     localStorage.clear();
     dispatch(logout());
+    dispatch(logoutEvent());
   }
 }
 
