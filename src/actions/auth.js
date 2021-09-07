@@ -30,7 +30,6 @@ export const startRegister = (email, password, name) => {
 
     try {
       if(body.ok) {
-        console.log('todobien ');
         localStorage.setItem('token', body.token);
         localStorage.setItem('token-init-date', new Date().getTime());
   

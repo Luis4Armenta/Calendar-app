@@ -31,8 +31,6 @@ export const LoginScreen = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    console.log(formRegisterValues);
-
     if ( rPassword1 !== rPassword2) {
       return Swal.fire('Error', 'Las contraseñas deben ser iguales', 'error');
     }
