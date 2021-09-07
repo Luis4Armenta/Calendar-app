@@ -41,18 +41,20 @@ export const startChecking = () => {
     const body =await resp.json();
 
     if(body.ok) {
+      console.log('La respuesta del renew ha sido positiva')
       localStorage.setItem('token', body.token);
       localStorage.setItem('token-init-date', new Date().getTime());
-
+      
       dispatch(login({ uid: body.uid, name: body.name }));
     } else {
-      dispatch(checkingFinish());
+      console.log('La respuesta del renew ha sido negativa')
     }
+    dispatch(checkingFinish());
   }
 }
 
 export const checkingFinish = () => ({
-  type: types.authChecking
+  type: types.authCheckingFinish
 });
 
 export const login = (user) => ({
